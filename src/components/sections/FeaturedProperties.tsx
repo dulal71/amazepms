@@ -16,7 +16,7 @@ import { PROPERTIES } from "@/data/properties";
 interface PropertyData {
   id: string;
   image: string;
-  status: "For Rent" | "Available";
+  status: string;
   type: string;
   title: string;
   address: string;
