@@ -13,6 +13,7 @@ import {
   HiOutlineArrowRight,
   HiOutlinePlayCircle,
 } from "react-icons/hi2";
+import FloatingParticles from "../ui/FloatingParticles";
 
 const HERO_IMAGES = [
   "/hero-images/banner-image-1.jfif",
@@ -136,14 +137,8 @@ export default function Hero() {
       aria-label="Hero section"
     >
       <BackgroundSlider />
-
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-20 top-1/4 h-72 w-72 rounded-full border border-blue-500/5" />
-        <div className="absolute -right-32 bottom-1/4 h-96 w-96 rounded-full border border-purple-500/5" />
-        <div className="absolute left-1/3 top-1/3 h-2 w-2 rounded-full bg-blue-400/20" />
-        <div className="absolute right-1/4 top-1/2 h-1.5 w-1.5 rounded-full bg-purple-400/20" />
-        <div className="absolute left-2/3 bottom-1/3 h-1 w-1 rounded-full bg-cyan-400/20" />
-      </div>
+       <FloatingParticles></FloatingParticles>
+      
 
       <div className="relative z-10 flex flex-1 flex-col pt-28">
         <div className="flex flex-1 items-center justify-center">
