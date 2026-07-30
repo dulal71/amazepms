@@ -4,6 +4,7 @@ import Services from "@/components/sections/Services";
 import About from "@/components/sections/About";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import HowItWorks from "@/components/sections/HowItWorks";
+import FeaturedProperties from "@/components/sections/FeaturedProperties";
 
 export default function Home() {
   return (
@@ -11,10 +12,10 @@ export default function Home() {
       <Navbar />
       <Hero />
       <About />
-     
+      <FeaturedProperties />
+      <HowItWorks />
       <Services />
       <WhyChooseUs />
-       <HowItWorks />
     </main>
   );
 }
