@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import {
@@ -12,6 +12,7 @@ import {
   HiOutlineClock,
   HiOutlineArrowRight,
   HiOutlinePlayCircle,
+  HiOutlineChevronDown,
 } from "react-icons/hi2";
 import FloatingParticles from "../ui/FloatingParticles";
 
@@ -37,7 +38,6 @@ const fadeUpVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
 };
-
 
 function BackgroundSlider() {
   const [loaded, setLoaded] = useState(false);
@@ -67,7 +67,7 @@ function BackgroundSlider() {
     if (!loaded) return;
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % HERO_IMAGES.length);
-    }, 5000);
+    }, 6000);
     return () => clearInterval(timer);
   }, [loaded]);
 
@@ -76,45 +76,152 @@ function BackgroundSlider() {
       <AnimatePresence mode="sync">
         <motion.div
           key={currentIndex}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.8, ease: "easeInOut" }}
+          initial={{ opacity: 0, scale: 1.15 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
           className="absolute inset-0 w-full"
         >
           <Image
             src={HERO_IMAGES[currentIndex]}
             alt=""
             fill
-            className="object-cover"
-            priority
+            className="scale-105 object-cover"
+            priority={currentIndex === 0}
             sizes="100vw"
           />
         </motion.div>
       </AnimatePresence>
 
-      <div className="absolute inset-0 w-full bg-gradient-to-b from-slate-950/70 via-slate-950/60 to-slate-950/80" />
-      <div className="absolute inset-0 w-full bg-[radial-gradient(ellipse_at_center_35%,rgba(37,99,235,0.12),transparent_70%)]" />
+      {/* Multi-layer overlays */}
+      <div className="absolute inset-0 w-full bg-gradient-to-b from-slate-950/60 via-slate-950/50 to-slate-950/80" />
+      <div className="absolute inset-0 w-full bg-[radial-gradient(ellipse_at_center_30%,rgba(37,99,235,0.15),transparent_70%)]" />
+      <div className="absolute inset-0 w-full bg-[radial-gradient(ellipse_at_bottom,rgba(0,0,0,0.4),transparent_60%)]" aria-hidden="true" />
+      <div className="absolute inset-0 w-full bg-[radial-gradient(ellipse_at_top,rgba(0,0,0,0.15),transparent_60%)]" aria-hidden="true" />
+
+      {/* Slider indicators */}
+      <div className="absolute bottom-8 left-1/2 z-20 hidden -translate-x-1/2 items-center gap-2.5 md:flex" role="tablist" aria-label="Image slides">
+        {HERO_IMAGES.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrentIndex(i)}
+            role="tab"
+            aria-selected={i === currentIndex}
+            aria-label={`Go to slide ${i + 1}`}
+            className={`rounded-full transition-all duration-500 ${
+              i === currentIndex
+                ? "w-8 bg-white/90 shadow-[0_0_12px_rgba(255,255,255,0.3)]"
+                : "w-2 bg-white/30 hover:bg-white/50"
+            } h-2 cursor-pointer`}
+          />
+        ))}
+      </div>
     </div>
   );
 }
 
+function ScrollIndicator() {
+  const scrollToNext = useCallback(() => {
+    const hero = document.getElementById("hero-section");
+    if (!hero) return;
+    const next = hero.nextElementSibling;
+    if (next) next.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
-function StatsCard({ data, index }: { data: (typeof STATS_DATA)[number]; index: number }) {
+  return (
+    <motion.button
+      onClick={scrollToNext}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1.5, duration: 0.8 }}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
+      className="absolute bottom-8 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-2 text-white/50 transition-colors hover:text-white/80 md:flex"
+      aria-label="Scroll to next section"
+    >
+      <span className="text-[10px] font-medium uppercase tracking-widest">
+        Scroll
+      </span>
+      <motion.div
+        animate={{ y: [0, 6, 0] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <HiOutlineChevronDown className="h-4 w-4" />
+      </motion.div>
+    </motion.button>
+  );
+}
+
+function FloatingCard({
+  value,
+  label,
+  position,
+  delay,
+}: {
+  value: string;
+  label: string;
+  position: string;
+  delay: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      className={`absolute z-20 hidden rounded-2xl border border-white/10 bg-white/[0.06] px-5 py-4 backdrop-blur-2xl xl:block ${position}`}
+    >
+      <motion.div
+        animate={{ y: [0, -6, 0] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay }}
+      >
+        <p className="text-xl font-bold text-white">{value}</p>
+        <p className="mt-0.5 text-xs text-slate-400">{label}</p>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function StatsCard({
+  data,
+  index,
+}: {
+  data: (typeof STATS_DATA)[number];
+  index: number;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.8 + index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ y: -6, scale: 1.02, transition: { duration: 0.3 } }}
-      className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.05] px-5 py-4 backdrop-blur-2xl transition-all hover:border-blue-500/30 hover:bg-white/[0.08] hover:shadow-lg hover:shadow-blue-500/10"
+      transition={{
+        duration: 0.5,
+        delay: 0.8 + index * 0.1,
+        ease: [0.16, 1, 0.3, 1],
+      }}
+      whileHover={{
+        y: -6,
+        scale: 1.03,
+        transition: { type: "spring", stiffness: 300, damping: 20 },
+      }}
+      className="group relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.05] px-5 py-4 backdrop-blur-2xl transition-shadow duration-300 hover:border-blue-500/30 hover:shadow-[0_0_30px_rgba(37,99,235,0.15)]"
     >
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 text-cyan-400">
-        {data.icon}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        aria-hidden="true"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent" />
       </div>
-      <div>
-        <p className="text-lg font-bold leading-none text-white">{data.value}</p>
-        <p className="mt-0.5 text-xs text-slate-400">{data.label}</p>
+      <div className="relative z-10 flex items-center gap-3">
+        <motion.div
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 text-cyan-400 transition-all duration-300 group-hover:scale-110 group-hover:rotate-[-8deg] group-hover:text-blue-300"
+        >
+          {data.icon}
+        </motion.div>
+        <div>
+          <p className="text-lg font-bold leading-none text-white">
+            {data.value}
+          </p>
+          <p className="mt-0.5 text-xs text-slate-400">{data.label}</p>
+        </div>
       </div>
     </motion.div>
   );
@@ -133,12 +240,26 @@ function StatsBar() {
 export default function Hero() {
   return (
     <section
+      id="hero-section"
       className="relative flex w-full min-h-screen flex-col overflow-hidden"
       aria-label="Hero section"
     >
       <BackgroundSlider />
-       <FloatingParticles></FloatingParticles>
-      
+      <FloatingParticles />
+
+      {/* Floating glass cards */}
+      <FloatingCard
+        value="98%"
+        label="Occupancy Rate"
+        position="right-[5%] top-1/4"
+        delay={0.6}
+      />
+      <FloatingCard
+        value="2500+"
+        label="Properties Managed"
+        position="left-[5%] top-1/3"
+        delay={0.9}
+      />
 
       <div className="relative z-10 flex flex-1 flex-col pt-28">
         <div className="flex flex-1 items-center justify-center">
@@ -159,7 +280,7 @@ export default function Hero() {
 
               <motion.h1
                 variants={fadeUpVariants}
-                className="text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl"
+                className="text-balance text-4xl font-bold leading-[1.15] tracking-tight text-white sm:text-5xl lg:text-6xl"
               >
                 Stress-Free Property Management{" "}
                 <span className="bg-gradient-to-r from-blue-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
@@ -170,7 +291,7 @@ export default function Hero() {
 
               <motion.p
                 variants={fadeUpVariants}
-                className="mt-6 max-w-2xl text-base leading-relaxed text-slate-400 sm:text-lg"
+                className="mt-6 max-w-2xl text-balance text-base leading-relaxed text-slate-400 sm:text-lg"
               >
                 From tenant screening and rent collection to maintenance and
                 financial reporting, we simplify every aspect of property
@@ -184,24 +305,36 @@ export default function Hero() {
                 <motion.a
                   href="/get-started"
                   whileHover={{
-                    scale: 1.03,
-                    boxShadow: "0 0 40px rgba(37,99,235,0.3)",
+                    scale: 1.04,
+                    boxShadow: "0 0 50px rgba(37,99,235,0.4), 0 8px 32px rgba(37,99,235,0.2)",
+                    y: -2,
                   }}
-                  whileTap={{ scale: 0.97 }}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
                   className="group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-900/40 transition-all hover:shadow-blue-700/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
                   aria-label="Get free consultation"
                 >
                   Get Free Consultation
-                  <HiOutlineArrowRight
-                    className="h-4 w-4 transition-transform group-hover:translate-x-1"
-                    aria-hidden="true"
-                  />
+                  <motion.span
+                    animate={{ x: [0, 3, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <HiOutlineArrowRight
+                      className="h-4 w-4 transition-transform"
+                      aria-hidden="true"
+                    />
+                  </motion.span>
                 </motion.a>
 
                 <motion.a
                   href="/services"
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
+                  whileHover={{
+                    scale: 1.04,
+                    y: -2,
+                    borderColor: "rgba(255,255,255,0.3)",
+                  }}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-8 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
                   aria-label="Explore our services"
                 >
@@ -240,6 +373,8 @@ export default function Hero() {
           </div>
         </div>
       </div>
+
+      <ScrollIndicator />
     </section>
   );
 }
