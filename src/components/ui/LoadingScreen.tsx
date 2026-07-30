@@ -7,22 +7,11 @@ import loadingAnimation from "@/../public/lottie/loading.json";
 
 export default function LoadingScreen() {
   const [show, setShow] = useState(true);
-  const [fadeOut, setFadeOut] = useState(false);
   const lottieRef = useRef<LottieRefCurrentProps>(null);
 
   useEffect(() => {
-    const ready = () => {
-      setFadeOut(true);
-      setTimeout(() => setShow(false), 600);
-    };
-
-    if (document.readyState === "complete") {
-      const timer = setTimeout(ready, 800);
-      return () => clearTimeout(timer);
-    }
-
-    window.addEventListener("load", ready);
-    return () => window.removeEventListener("load", ready);
+    const timer = setTimeout(() => setShow(false), 2000);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -30,8 +19,8 @@ export default function LoadingScreen() {
       {show && (
         <motion.div
           initial={{ opacity: 1 }}
-          animate={{ opacity: fadeOut ? 0 : 1 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1, ease: "easeInOut" }}
           className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#030712]"
         >
           <div className="flex flex-col items-center gap-14 sm:gap-16">
