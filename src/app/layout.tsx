@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter, Space_Grotesk } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
+import LoadingScreen from "@/components/ui/LoadingScreen";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
   description:
     "A premium property management platform that helps property managers streamline operations, manage tenants, collect rent, and track maintenance with ease.",
 };
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,10 +31,10 @@ export default function RootLayout({
       className={`${inter.variable} ${spaceGrotesk.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <SmoothScroll></SmoothScroll>
+        <LoadingScreen />
+        <SmoothScroll />
         {children}
-        
-        </body>
+      </body>
     </html>
   );
 }
