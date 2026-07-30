@@ -1,7 +1,7 @@
-// components/MobileMenu.tsx
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import NavLinkItem from "./NavLinkItem";
 import { NAV_LINKS } from "@/lib/nav-links";
@@ -12,8 +12,13 @@ interface MobileMenuProps {
   onClose: () => void;
 }
 
-
 export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -30,11 +35,12 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     };
   }, [isOpen, onClose]);
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -45,7 +51,6 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             aria-hidden="true"
           />
 
-          {/* Slide-in panel */}
           <motion.nav
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
@@ -63,15 +68,16 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             </ul>
 
             <Link
-            href="/get-started"
+              href="/get-started"
               onClick={onClose}
               className="mt-8 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-900/40 transition-transform active:scale-95"
             >
-                 Get Started
+              Get Started
             </Link>
-              </motion.nav>
+          </motion.nav>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }

@@ -16,6 +16,9 @@ import {
   FaStar,
   FaClock,
 } from "react-icons/fa";
+import DecorativeGlows from "../ui/DecorativeGlows";
+import FloatingParticles from "../ui/FloatingParticles";
+import DashboardCard from "../ui/DashboardCard";
 
 interface BenefitData {
   icon: React.ReactNode;
@@ -119,30 +122,7 @@ const fadeUpVariants: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
 };
 
-function FloatingParticles() {
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-      <div className="absolute left-1/4 top-1/4 h-1.5 w-1.5 rounded-full bg-blue-400/30" />
-      <div className="absolute right-1/3 top-1/3 h-1 w-1 rounded-full bg-purple-400/20" />
-      <div className="absolute left-2/3 bottom-1/4 h-2 w-2 rounded-full bg-cyan-400/20" />
-      <div className="absolute right-1/4 top-2/3 h-1 w-1 rounded-full bg-blue-400/25" />
-      <div className="absolute left-1/5 bottom-1/3 h-1.5 w-1.5 rounded-full bg-blue-500/15" />
-      <div className="absolute right-2/5 top-1/5 h-1 w-1 rounded-full bg-purple-500/20" />
-    </div>
-  );
-}
 
-function DecorativeGlows() {
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-      <div className="absolute -left-40 top-1/4 h-80 w-80 rounded-full bg-blue-500/5 blur-3xl" />
-      <div className="absolute -right-40 top-1/3 h-96 w-96 rounded-full bg-purple-500/5 blur-3xl" />
-      <div className="absolute left-1/3 top-2/3 h-64 w-64 rounded-full bg-cyan-500/[0.04] blur-3xl" />
-      <div className="absolute left-1/2 top-1/4 h-0.5 w-32 rotate-45 bg-gradient-to-r from-transparent via-blue-500/10 to-transparent" />
-      <div className="absolute right-1/4 top-3/4 h-0.5 w-24 -rotate-12 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent" />
-    </div>
-  );
-}
 
 function BenefitCard({ data, index }: { data: BenefitData; index: number }) {
   return (
@@ -171,48 +151,7 @@ function BenefitCard({ data, index }: { data: BenefitData; index: number }) {
   );
 }
 
-function DashboardCard() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-      className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6 backdrop-blur-2xl"
-    >
-      <div className="mb-5 flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-600/20 text-blue-400">
-          <FaChartLine className="text-base" />
-        </div>
-        <div>
-          <p className="text-xs font-medium uppercase tracking-widest text-slate-400">
-            Performance Overview
-          </p>
-          <p className="text-sm font-semibold text-white">Portfolio Summary</p>
-        </div>
-      </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-4">
-          <p className="text-xs text-slate-400">Occupancy Rate</p>
-          <p className="mt-1 text-2xl font-bold text-emerald-400">98%</p>
-        </div>
-        <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-4">
-          <p className="text-xs text-slate-400">Monthly Revenue</p>
-          <p className="mt-1 text-2xl font-bold text-white">$847K</p>
-        </div>
-        <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-4">
-          <p className="text-xs text-slate-400">Maintenance</p>
-          <p className="mt-1 text-2xl font-bold text-amber-400">12 Open</p>
-        </div>
-        <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-4">
-          <p className="text-xs text-slate-400">Tenant Satisfaction</p>
-          <p className="mt-1 text-2xl font-bold text-blue-400">4.9/5</p>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
 
 function MiniStatCard({ data, index }: { data: MiniStatData; index: number }) {
   return (

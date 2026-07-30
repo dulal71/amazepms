@@ -152,34 +152,7 @@ function ScrollIndicator() {
   );
 }
 
-function FloatingCard({
-  value,
-  label,
-  position,
-  delay,
-}: {
-  value: string;
-  label: string;
-  position: string;
-  delay: number;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className={`absolute z-20 hidden rounded-2xl border border-white/10 bg-white/[0.06] px-5 py-4 backdrop-blur-2xl xl:block ${position}`}
-    >
-      <motion.div
-        animate={{ y: [0, -6, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay }}
-      >
-        <p className="text-xl font-bold text-white">{value}</p>
-        <p className="mt-0.5 text-xs text-slate-400">{label}</p>
-      </motion.div>
-    </motion.div>
-  );
-}
+
 
 function StatsCard({
   data,
@@ -247,20 +220,7 @@ export default function Hero() {
       <BackgroundSlider />
       <FloatingParticles />
 
-      {/* Floating glass cards */}
-      <FloatingCard
-        value="98%"
-        label="Occupancy Rate"
-        position="right-[5%] top-1/4"
-        delay={0.6}
-      />
-      <FloatingCard
-        value="2500+"
-        label="Properties Managed"
-        position="left-[5%] top-1/3"
-        delay={0.9}
-      />
-
+     
       <div className="relative z-10 flex flex-1 flex-col pt-28">
         <div className="flex flex-1 items-center justify-center">
           <div className="mx-auto w-full max-w-4xl px-6 lg:px-10">
