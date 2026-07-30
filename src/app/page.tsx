@@ -3,15 +3,18 @@ import Hero from "@/components/sections/Hero";
 import Services from "@/components/sections/Services";
 import About from "@/components/sections/About";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
+import HowItWorks from "@/components/sections/HowItWorks";
 
 export default function Home() {
   return (
     <main className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-     <Navbar />
-     <Hero />
-     <About />
-     <Services />
-     <WhyChooseUs />
+      <Navbar />
+      <Hero />
+      <About />
+     
+      <Services />
+      <WhyChooseUs />
+       <HowItWorks />
     </main>
   );
 }
