@@ -4,6 +4,10 @@ import Services from "@/components/sections/Services";
 import About from "@/components/sections/About";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import HowItWorks from "@/components/sections/HowItWorks";
+import Footer from "@/components/sections/Footer";
+import Contact from "@/components/sections/Contact";
+import Faq from "@/components/sections/Faq";
+import FeaturedProperties from "@/components/sections/FeaturedProperties";
 
 export default function Home() {
   return (
@@ -11,11 +15,13 @@ export default function Home() {
       <Navbar />
       <Hero />
       <About />
-
-     <Services />
-     
-      <WhyChooseUs />
+       <Services />
+     <WhyChooseUs />
        <HowItWorks />
+       <FeaturedProperties></FeaturedProperties>
+       <Faq></Faq>
+       <Contact></Contact>
+      <Footer></Footer> 
     </main>
   );
 }
