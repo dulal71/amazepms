@@ -6,14 +6,14 @@ A premium property management software landing page built with Next.js 16, React
 
 | Technology | Description |
 |---|---|
-| **Next.js 16** | App Router, React Server Components, React Compiler |
-| **React 19** | Server Components, Actions |
-| **TypeScript** | Strict-mode, full type safety |
-| **Tailwind CSS v4** | Utility-first styling, CSS-first configuration |
-| **Framer Motion** | Declarative animations, gesture support |
-| **Lenis** | Smooth scrolling with native scroll interop |
-| **GSAP** | High-performance timeline animations |
-| **Lottie** | Vector animation rendering |
+| **Next.js 16** 
+| **React 19** 
+| **TypeScript** 
+| **Tailwind CSS v4** 
+| **Framer Motion** 
+| **Lenis** 
+| **GSAP**
+| **Lottie**
 
 ## Getting Started
 
@@ -29,38 +29,38 @@ Open [http://localhost:3000](http://localhost:3000).
 ```
 src/
 ├── app/
-│   ├── layout.tsx          # Root layout, fonts, metadata
-│   ├── page.tsx            # Homepage section composition
-│   ├── not-found.tsx       # 404 page
-│   └── globals.css         # Tailwind import, design tokens
+│   ├── layout.tsx          
+│   ├── page.tsx            
+│   ├── not-found.tsx       
+│   └── globals.css         
 ├── components/
 │   ├── layout/
-│   │   └── Navbar.tsx      # Fixed header with mobile menu
+│   │   └── Navbar.tsx      
 │   ├── sections/
-│   │   ├── Hero.tsx        # Full-screen hero with image slider
-│   │   ├── About.tsx       # Company story, stats, features
-│   │   ├── Services.tsx    # Service offerings grid
-│   │   ├── WhyChooseUs.tsx # Value proposition timeline
-│   │   ├── HowItWorks.tsx  # 4-step process
-│   │   ├── Testimonials.tsx# Client reviews carousel
-│   │   ├── FeaturedProperties.tsx # Property listings
-│   │   ├── Faq.tsx         # Accordion FAQ
-│   │   ├── CtaBanner.tsx   # Call-to-action section
-│   │   ├── Contact.tsx     # Contact form + info
-│   │   └── Footer.tsx      # Site footer, links, newsletter
+│   │   ├── Hero.tsx       
+│   │   ├── About.tsx       
+│   │   ├── Services.tsx    
+│   │   ├── WhyChooseUs.tsx 
+│   │   ├── HowItWorks.tsx  
+│   │   ├── Testimonials.tsx
+│   │   ├── FeaturedProperties.tsx 
+│   │   ├── Faq.tsx         
+│   │   ├── CtaBanner.tsx   
+│   │   ├── Contact.tsx     
+│   │   └── Footer.tsx      
 │   └── ui/
-│       ├── Logo.tsx        # Responsive logo mark
-│       ├── NavLinkItem.tsx  # Nav link with active indicator
-│       ├── MobileMenu.tsx   # Animated slide-in drawer
-│       ├── LoadingScreen.tsx# Lottie splash on initial load
-│       └── ...             # Decorative components
+│       ├── Logo.tsx        
+│       ├── NavLinkItem.tsx  
+│       ├── MobileMenu.tsx   
+│       ├── LoadingScreen.tsx
+│       └── ...             
 ├── lib/
-│   └── nav-links.ts        # Navigation link definitions
+│   └── nav-links.ts        
 ├── data/
-│   ├── testimonials.ts     # Testimonial content
-│   └── properties.ts       # Property listing data
+│   ├── testimonials.ts     
+│   └── properties.ts       
 └── components/
-    └── SmoothScroll.tsx    # Lenis initialization
+    └── SmoothScroll.tsx    
 ```
 
 ## Design System
